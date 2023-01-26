@@ -1,10 +1,14 @@
-import { Text, TextInput, View, Button,  } from "react-native"
+import { Text, TextInput, View } from "react-native"
+import PrimaryButton from "../components/PrimaryButton"
 
 function StartGameScreen() {
+  
   return (
     <View>
-      <TextInput />
       <Text>StartGameScreen</Text>
+      <TextInput />
+      <PrimaryButton>Reset</PrimaryButton>
+      <PrimaryButton>Confirm</PrimaryButton>
     </View>
   )
 }
