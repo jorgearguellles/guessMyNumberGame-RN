@@ -1,5 +1,5 @@
 /**
- * Copyright (c) Facebook, Inc. and its affiliates.
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
@@ -7,8 +7,6 @@
  * @flow
  * @format
  */
-
-'use strict';
 
 import fs from 'fs';
 
@@ -23,7 +21,7 @@ import {PropsType, Type} from './Type';
 import {HeaderWriter} from './HeaderWriter';
 import {ImplementationWriter} from './ImplementationWriter';
 
-// $FlowFixMe: this isn't a module, just a JSON file.
+// $FlowFixMe[cannot-resolve-module] : this isn't a module, just a JSON file.
 const standard = require('devtools-protocol/json/js_protocol.json');
 
 const custom = require('../src/custom.json');
@@ -34,7 +32,7 @@ type Descriptor = {|
   events: Array<Event>,
 |};
 
-function mergeDomains(original, extra) {
+function mergeDomains(original: any, extra: any) {
   return {...original, domains: original.domains.concat(extra.domains)};
 }
 
@@ -43,6 +41,7 @@ const proto = mergeDomains(standard, custom);
 function parseDomains(
   domainObjs: Array<any>,
   ignoreExperimental: boolean,
+  includeExperimental: Set<string>,
 ): Descriptor {
   const desc = {
     types: [],
@@ -61,7 +60,12 @@ function parseDomains(
     }
 
     for (const commandObj of obj.commands || []) {
-      const command = Command.create(domain, commandObj, ignoreExperimental);
+      const command = Command.create(
+        domain,
+        commandObj,
+        !includeExperimental.has(`${domain}.${commandObj.name}`) &&
+          ignoreExperimental,
+      );
       if (command) {
         desc.commands.push(command);
       }
@@ -85,7 +89,7 @@ function buildGraph(desc: Descriptor): Graph {
   const commands = desc.commands;
   const events = desc.events;
 
-  const maybeAddPropEdges = function(nodeId: string, props: ?Array<Property>) {
+  const maybeAddPropEdges = function (nodeId: string, props: ?Array<Property>) {
     if (props) {
       for (const prop of props) {
         const refId = prop.getRefDebuggerName();
@@ -182,7 +186,7 @@ function filterReachableFromRoots(
 
   // Sort commands and events so the code is easier to read. Types have to be
   // topologically sorted as explained above.
-  const comparator = (a, b) => {
+  const comparator = (a: Command | Event, b: Command | Event) => {
     const id1 = a.getDebuggerName();
     const id2 = b.getDebuggerName();
     return id1 < id2 ? -1 : id1 > id2 ? 1 : 0;
@@ -201,18 +205,27 @@ function main() {
     .boolean('e')
     .alias('e', 'ignore-experimental')
     .describe('e', 'ignore experimental commands, props, and types')
+    .alias('i', 'include-experimental')
+    .describe('i', 'experimental commands to include')
     .alias('r', 'roots')
     .describe('r', 'path to a file listing root types, events, and commands')
     .nargs('r', 1)
     .demandCommand(2, 2).argv;
 
   const ignoreExperimental = !!args.e;
+  const includeExperimental = new Set(
+    typeof args.i === 'string' ? args.i.split(',') : [],
+  );
   const [headerPath, implPath] = args._;
 
   const headerStream = fs.createWriteStream(headerPath);
   const implStream = fs.createWriteStream(implPath);
 
-  const desc = parseDomains(proto.domains, ignoreExperimental);
+  const desc = parseDomains(
+    proto.domains,
+    ignoreExperimental,
+    includeExperimental,
+  );
   const graph = buildGraph(desc);
   const roots = parseRoots(desc, String(args.roots));
 
