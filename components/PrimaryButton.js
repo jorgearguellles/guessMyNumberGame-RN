@@ -1,4 +1,4 @@
-import { Text, View } from "react-native"
+import { Text, View, StyleSheet } from "react-native"
 
 function PrimaryButton(props) {
   const {children} = props;
@@ -10,4 +10,6 @@ function PrimaryButton(props) {
   )
 }
 
-export default PrimaryButton
+export default PrimaryButton;
+
+const styles = StyleSheet.create({});
