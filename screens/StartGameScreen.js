@@ -3,9 +3,8 @@ import { TextInput, View, StyleSheet, Alert } from "react-native";
 import PrimaryButton from "../components/ui/PrimaryButton";
 import Colors from "../constants/colors";
 
-function StartGameScreen(props) {
+function StartGameScreen({onPickNumber}) {
 
-  const {onPickNumber} = props;
   const [enteredNumber, setEnteredNumber] = useState('');
 
   function numberedInputHandler (enteredText){

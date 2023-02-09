@@ -1,8 +1,7 @@
 import { View, Text, StyleSheet } from 'react-native';
 import Colors from "../../constants/colors";
 
-export default function NumberContainer(props) {
-  const {children} = props;
+export default function NumberContainer({children}) {
 
   return (
     <View style={styles.container}>

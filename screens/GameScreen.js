@@ -5,6 +5,8 @@ import {Text, View, StyleSheet} from 'react-native'
 import NumberContainer from '../components/game/NumberContainer';
 import Title from '../components/ui/Title';
 
+const min = 1, max = 100;
+
 function generateRandomBetween(min, max, exclude) {
   const randomNum = Math.floor(Math.random() * (max - min)) + min;
 
@@ -15,10 +17,9 @@ function generateRandomBetween(min, max, exclude) {
   }
 };
 
-function GameScreen(props) {
-  const {userNumber} = props;
+function GameScreen({userNumber}) {
 
-  const initialGuess = generateRandomBetween(1,100, userNumber)
+  const initialGuess = generateRandomBetween(min,max, userNumber)
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
 
   return (
