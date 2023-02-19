@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {Text, View, StyleSheet, Alert} from 'react-native'
 
 import PrimaryButton from "../components/ui/PrimaryButton";
@@ -18,10 +18,17 @@ function generateRandomBetween(min, max, exclude) {
   }
 };
 
-function GameScreen({userNumber}) {
+function GameScreen({userNumber, onGameOver}) {
 
-  const initialGuess = generateRandomBetween(minBoundary,maxBoundary, userNumber);
+  const initialGuess = generateRandomBetween(1,100, userNumber);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
+
+  useEffect(() => {
+    if(currentGuess === userNumber){
+      onGameOver();
+    }
+  }, [currentGuess, userNumber, onGameOver])
+  
 
   function nextGuessHandler(direction){
 
@@ -44,10 +51,9 @@ function GameScreen({userNumber}) {
       maxBoundary,
       currentGuess
     );
+
     setCurrentGuess(newRandomNumber);
   };
-
-
 
   return (
     <View style={styles.screen}>
@@ -74,10 +80,10 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 24,
   },
-  buttonsContainer:{
-    flexDirection: 'row',
-  },
-  buttonContainer: {
-    flex: 1,
-  }
+  // buttonsContainer:{
+  //   flexDirection: 'row',
+  // },
+  // buttonContainer: {
+  //   flex: 1,
+  // }
 });

@@ -4,20 +4,34 @@ import { StatusBar } from 'expo-status-bar';
 import { LinearGradient } from 'expo-linear-gradient';
 import Colors from './constants/colors';
 import StartGameScreen from './screens/StartGameScreen';
+import GameOverScreen from './screens/GameOverScreen';
 import GameScreen from './screens/GameScreen';
 
 export default function App() {
 
   const [userNumber, setUserNumber] = useState();
+  const [isGameOver, setIsGameOver] = useState(true);
 
   function pickedNumberHandler(pickedNumber){
     setUserNumber(pickedNumber);
+    setIsGameOver(false);
+  };
+
+  function gameOverHandler(){
+    setIsGameOver(true);
   };
 
   let screenToRender = <StartGameScreen onPickNumber={pickedNumberHandler} />;
 
   if(userNumber){
-    screenToRender = <GameScreen userNumber={userNumber}/>;
+    screenToRender = <GameScreen 
+      userNumber={userNumber} 
+      onGameOver={gameOverHandler} 
+    />;
+  }
+
+  if(isGameOver && userNumber){
+    screenToRender = <GameOverScreen />
   }
 
   return (
