@@ -64,8 +64,16 @@ function GameScreen({userNumber, onGameOver}) {
       <Card>
         <InstructionText>Higher or lower?</InstructionText>
         <View style={styles.buttonsContainer}>
-          <PrimaryButton onPress={nextGuessHandler.bind(this, Strings.LOWER)} style={styles.buttonContainer}>-</PrimaryButton>
-          <PrimaryButton onPress={nextGuessHandler.bind(this, Strings.GREATER)} style={styles.buttonContainer}>+</PrimaryButton>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, Strings.LOWER)} >
+              -
+            </PrimaryButton>
+          </View>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, Strings.GREATER)} >
+              +
+            </PrimaryButton>
+          </View>
         </View>
       </Card>
       <View>
