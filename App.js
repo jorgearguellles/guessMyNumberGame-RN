@@ -16,6 +16,7 @@ export default function App() {
   const [isGameOver, setIsGameOver] = useState(true);
   const [guessRounds, setGuessRounds] = useState(0);
 
+  // Fonts Constants 
   const [fontsLoader, setFontsLoader] = useFonts({
     'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
     'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
@@ -30,8 +31,9 @@ export default function App() {
     setIsGameOver(false);
   };
 
-  function gameOverHandler(){
+  function gameOverHandler(numberOfRounds){
     setIsGameOver(true);
+    setGuessRounds(numberOfRounds)
   };
 
   function startNewGameHandler() {
