@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, Alert, FlatList } from 'react-native'
+import { Text, View, StyleSheet, Alert, FlatList, Dimensions } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 
 import PrimaryButton from "../components/ui/PrimaryButton";
@@ -154,6 +154,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     padding: 24,
+    alignItems: 'center',
   },
   InstructionText:{
     marginBottom: 12,
