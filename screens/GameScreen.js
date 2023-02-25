@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, Alert, FlatList, Dimensions } from 'react-native'
+import { View, StyleSheet, Alert, FlatList, useWindowDimensions } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 
 import PrimaryButton from "../components/ui/PrimaryButton";
@@ -14,19 +14,17 @@ let minBoundary = 1, maxBoundary = 100;
 
 function generateRandomBetween(min, max, exclude) {
   /**
-   * This function, called generateRandomBetween, 
-   * takes three parameters: min, max, and exclude. 
+   * Takes three parameters: min, max, and exclude. 
    * It returns a random number between min and max, 
    * excluding the exclude value if it is passed as a parameter.
    * 
    * The first line of the function generates a random number between 
    * min (inclusive) and max (exclusive) using the Math.random() method.
-   * 
    * This generates a number between 0 and 1, which is then multiplied 
    * by the range between max and min and rounded down using Math.floor().
-   * 
    * The resulting number is then added to min, which shifts the range 
    * to start at min.
+   * 
    * The if statement checks if the randomNum generated equals the exclude
    * value passed in as a parameter. If they are equal, the function calls 
    * itself recursively until a different value is generated.
@@ -41,7 +39,7 @@ function generateRandomBetween(min, max, exclude) {
     return generateRandomBetween(min, max, exclude);
   } else {
     return randomNum;
-  }
+  };
 };
 
 function GameScreen({userNumber, onGameOver}) {
@@ -49,6 +47,7 @@ function GameScreen({userNumber, onGameOver}) {
   const initialGuess = generateRandomBetween(1,100, userNumber);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
   const [guessRounds, setGuessRounds] = useState([initialGuess]);
+  const { height, width } = useWindowDimensions();
 
   useEffect(() => {
     if(currentGuess === userNumber){
@@ -64,8 +63,7 @@ function GameScreen({userNumber, onGameOver}) {
   function nextGuessHandler(direction){
 
     /**
-     * This function appears to be a handler function for the next guess in
-     * a number guessing game. It takes a single parameter direction that
+     * Takes a single parameter direction that
      * indicates whether the next guess should be higher or lower than
      * the current guess. 
      * 
@@ -114,9 +112,8 @@ function GameScreen({userNumber, onGameOver}) {
 
   const guessRoundsListLength = guessRounds.length;
 
-  return (
-    <View style={styles.screen}>
-      <Title>Opponent's Guess</Title>
+  let content = (
+    <>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card>
         <InstructionText style={styles.InstructionText}>Higher or lower?</InstructionText>
@@ -133,6 +130,34 @@ function GameScreen({userNumber, onGameOver}) {
           </View>
         </View>
       </Card>
+    </>
+  );
+
+  if(width > 500){
+    content = (
+      <>
+        <InstructionText style={styles.InstructionText}>Higher or lower?</InstructionText>
+        <View style={styles.buttonsContainerWide}>
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, Strings.LOWER)} >
+              <Ionicons name='md-remove' size={24} color="white" />
+            </PrimaryButton>
+          </View>
+          <NumberContainer>{currentGuess}</NumberContainer>;
+          <View style={styles.buttonContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, Strings.GREATER)} >
+              <Ionicons name='md-add' size={24} color="white" />
+            </PrimaryButton>
+          </View>
+        </View>
+      </>
+    );
+  };
+
+  return (
+    <View style={styles.screen}>
+      <Title>Opponent's Guess</Title>
+      {content}
       <View style={styles.listContainer}>
         <FlatList 
           data={guessRounds} 
@@ -164,6 +189,10 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flex: 1,
+  },
+  buttonsContainerWide:{
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   listContainer: {
     flex: 1,
