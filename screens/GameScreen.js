@@ -116,7 +116,9 @@ function GameScreen({userNumber, onGameOver}) {
     <>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card>
-        <InstructionText style={styles.InstructionText}>Higher or lower?</InstructionText>
+        <InstructionText style={styles.InstructionText}>
+          Higher or lower?
+        </InstructionText>
         <View style={styles.buttonsContainer}>
           <View style={styles.buttonContainer}>
             <PrimaryButton onPress={nextGuessHandler.bind(this, Strings.LOWER)} >
@@ -136,7 +138,6 @@ function GameScreen({userNumber, onGameOver}) {
   if(width > 500){
     content = (
       <>
-        <InstructionText style={styles.InstructionText}>Higher or lower?</InstructionText>
         <View style={styles.buttonsContainerWide}>
           <View style={styles.buttonContainer}>
             <PrimaryButton onPress={nextGuessHandler.bind(this, Strings.LOWER)} >
@@ -161,9 +162,10 @@ function GameScreen({userNumber, onGameOver}) {
       <View style={styles.listContainer}>
         <FlatList 
           data={guessRounds} 
-          renderItem={(itemData)=> (<GuessLogItem
-            roundNumber={guessRoundsListLength - itemData.index} 
-            guess={itemData.item}
+          renderItem={(itemData)=> (
+            <GuessLogItem
+              roundNumber={guessRoundsListLength - itemData.index} 
+              guess={itemData.item}
             />
           )}
           keyExtractor={(item)=> item}
