@@ -34,7 +34,6 @@ Made with :green_heart: and:
 ![App Screenshot](https://github.com/jorgearguellles/guessMyNumberGame-RN/blob/main/assets/screensshoots/Captura%20de%20Pantalla%202023-08-07%20a%20la(s)%205.16.30%20p.m..png)
 ![App Screenshot](https://github.com/jorgearguellles/guessMyNumberGame-RN/blob/main/assets/screensshoots/Captura%20de%20Pantalla%202023-08-07%20a%20la(s)%205.16.36%20p.m..png)
 ![App Screenshot](https://github.com/jorgearguellles/guessMyNumberGame-RN/blob/main/assets/screensshoots/Captura%20de%20Pantalla%202023-08-07%20a%20la(s)%205.17.36%20p.m..png)
-![App Screenshot]()
 
 ## Feedback
 
